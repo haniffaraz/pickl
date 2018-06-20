@@ -1,22 +1,36 @@
-document.addEventListener('DOMContentLoaded', onLoad())
+const container = document.querySelector('#container')
+const categories = document.querySelector('#categories')
+const games = document.querySelector('#games')
+// const cardBody = document.querySelector('.card-body')
 
-const container = document.querySelector('.container')
-const container = document.querySelector('.categories')
-const container = document.querySelector('.games')
+document.addEventListener('DOMContentLoaded', onLoad)
 
+function onLoad() {
+  renderGames()
+}
 
-function postTemplate(post) {
-  return
-  `<div>
-      <p>${post.home_team.name}</p>
-      <p>${post.away_team.name}</p>
-      <p>${post.post_likes}</p>
-    </div>`
-
+function postTemplate(team) {
+  return `<h5 class="card-title">${team.abbreviation} Votes</h5>
+    <p class="card-text">${team.name} vs. ${team.city}</p>`
 }
 
 
-postAdapter.getAllPosts()
-  .then(resp => {
-    resp.forEach
+function renderGames() {
+  postAdapter.getAllPosts()
+    .then(games => {
+      games.forEach(game => {
+        getTeam(game.home_team_id)
+        getTeam(game.away_team_id)
+      })
+    })
+}
+
+
+function getTeam(id) {
+  teamAdapter.oneTeam(id)
+    .then(team => {
+      let aTeam = postTemplate(team)
+
+      document.querySelector('.card-body').innerHTML = aTeam
   })
+}
